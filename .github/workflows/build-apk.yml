@@ -13,6 +13,7 @@ jobs:
     defaults:
       run:
         working-directory: android
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,11 +25,10 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Accept Android SDK licenses and install packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
